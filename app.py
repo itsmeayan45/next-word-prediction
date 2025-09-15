@@ -1,8 +1,9 @@
 import numpy as np
 import pickle
 import streamlit as st
-from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
 import time
 
 # Configure page
@@ -95,21 +96,36 @@ st.markdown("""
 ## load the lstm model
 with st.spinner('🔄 Loading AI model...'):
     try:
-        model=load_model('next_word_lstm.keras')
+        import os
+        if not os.path.exists('next_word_lstm.keras'):
+            st.error("❌ Model file 'next_word_lstm.keras' not found. Please ensure the model file is uploaded to the repository.")
+            st.info("💡 You can train the model using the exp.ipynb notebook.")
+            st.stop()
+        
+        model = load_model('next_word_lstm.keras')
         if model is None:
             st.error("Failed to load the model")
             st.stop()
+        st.success("✅ Model loaded successfully!")
     except Exception as e:
-        st.error(f"Error loading model: {e}")
+        st.error(f"❌ Error loading model: {e}")
+        st.info("🔧 Make sure TensorFlow is properly installed and the model file is compatible.")
         st.stop()
 
 # load the tokenizer
 with st.spinner('📚 Loading vocabulary...'):
     try:
+        import os
+        if not os.path.exists('tokenizer.pickle'):
+            st.error("❌ Tokenizer file 'tokenizer.pickle' not found. Please ensure the tokenizer file is uploaded to the repository.")
+            st.info("💡 You can generate the tokenizer using the exp.ipynb notebook.")
+            st.stop()
+            
         with open('tokenizer.pickle','rb') as handle:
             tokenizer=pickle.load(handle)
+        st.success("✅ Tokenizer loaded successfully!")
     except Exception as e:
-        st.error(f"Error loading tokenizer: {e}")
+        st.error(f"❌ Error loading tokenizer: {e}")
         st.stop()
 
 ## function  to predict the next word
