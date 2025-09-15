@@ -23,7 +23,7 @@ A modern web application powered by LSTM neural networks that predicts the next 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/next-word-predictor.git
+   git clone https://github.com/itsmeayan45/next-word-predictor.git
    cd next-word-predictor
    ```
 
